@@ -22,6 +22,9 @@ The whole site is one file: `college-lost-and-found.html`. There is nothing to i
 
 That is all. An internet connection is only needed to load the Google Font. If it is offline, the site falls back to the system font and still works.
 
+##Deployed link
+https://clglostandfound.netlify.app
+
 ## How data is stored
 
 Posts are saved in your browser's `localStorage`. This means:
