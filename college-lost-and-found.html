@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>College Lost and Found</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#2437d6; --ink:#101a4d; --page:#f2f4ff; --card:#fff;
+  --lost:#ff5a4f; --found:#12a97a; --sun:#ffd23f; --muted:#5d668f; --line:#d9ddf5;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:'Bricolage Grotesque',system-ui,sans-serif;background:var(--page);color:var(--ink);line-height:1.5}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+
+header{background:var(--blue);color:#fff;padding:48px 20px 72px;position:relative;overflow:hidden}
+.wrap{max-width:1080px;margin:0 auto}
+.brand{font-weight:600;font-size:1rem;opacity:.85;margin:0 0 18px}
+h1{font-size:clamp(2.6rem,8vw,5.5rem);line-height:.95;margin:0;font-weight:800;letter-spacing:-.03em;max-width:12ch}
+.sub{font-size:1.15rem;max-width:44ch;margin:20px 0 28px;opacity:.9}
+.cta{display:flex;gap:12px;flex-wrap:wrap}
+.btn{border:0;border-radius:999px;padding:14px 26px;font-weight:600;cursor:pointer;transition:transform .15s}
+.btn:active{transform:scale(.97)}
+.btn.lost{background:var(--lost);color:#fff}
+.btn.found{background:var(--found);color:#fff}
+.btn.ghost{background:transparent;border:2px solid var(--line);color:var(--ink);padding:8px 16px}
+.hero-tag{position:absolute;right:max(20px,6vw);top:40px;width:150px;background:var(--sun);color:var(--ink);border-radius:14px;padding:46px 16px 18px;transform:rotate(9deg);transform-origin:50% 0;font-weight:800;font-size:1.3rem;line-height:1.1;box-shadow:0 12px 30px rgba(0,0,20,.3);animation:swing 3.2s ease-in-out 1 both}
+.hero-tag::before{content:"";position:absolute;top:14px;left:50%;width:18px;height:18px;margin-left:-9px;border-radius:50%;background:var(--blue)}
+.hero-tag small{display:block;font-weight:400;font-size:.8rem;margin-top:8px}
+@keyframes swing{0%{transform:rotate(-14deg)}30%{transform:rotate(16deg)}60%{transform:rotate(5deg)}100%{transform:rotate(9deg)}}
+@media(max-width:700px){.hero-tag{display:none}}
+@media(prefers-reduced-motion:reduce){.hero-tag{animation:none}}
+
+main{max-width:1080px;margin:-34px auto 60px;padding:0 20px;position:relative}
+.bar{background:var(--card);border-radius:20px;padding:14px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;box-shadow:0 8px 24px rgba(16,26,77,.12)}
+.tabs{display:flex;gap:6px}
+.tab{border:0;background:transparent;border-radius:999px;padding:9px 18px;font-weight:600;cursor:pointer;color:var(--muted)}
+.tab[aria-pressed=true]{background:var(--ink);color:#fff}
+.bar input[type=search],.bar select{flex:1;min-width:150px;border:2px solid var(--line);border-radius:12px;padding:10px 14px;background:#fff}
+.count{margin:26px 4px 14px;color:var(--muted);font-weight:600}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:22px}
+.item{background:var(--card);border-radius:18px;padding:34px 20px 18px;position:relative;border-top:8px solid var(--c);display:flex;flex-direction:column;gap:6px}
+.item::before{content:"";position:absolute;top:12px;left:50%;width:14px;height:14px;margin-left:-7px;border-radius:50%;background:var(--page);box-shadow:inset 0 1px 3px rgba(0,0,0,.25)}
+.item.lost{--c:var(--lost)} .item.found{--c:var(--found)}
+.badge{align-self:flex-start;background:var(--c);color:#fff;font-weight:800;font-size:.85rem;padding:2px 12px;border-radius:999px}
+.item h3{margin:6px 0 0;font-size:1.3rem;line-height:1.2}
+.meta{color:var(--muted);font-size:.92rem;margin:0}
+.desc{margin:6px 0;font-size:.97rem}
+.actions{margin-top:auto;padding-top:12px;display:flex;gap:8px;flex-wrap:wrap}
+.item.done{opacity:.55}
+.item.done h3{text-decoration:line-through}
+.empty{grid-column:1/-1;text-align:center;background:var(--card);border-radius:18px;padding:50px 20px;color:var(--muted)}
+
+dialog{border:0;border-radius:24px;padding:0;width:min(520px,94vw);box-shadow:0 30px 80px rgba(16,26,77,.4)}
+dialog::backdrop{background:rgba(16,26,77,.6)}
+.dhead{padding:22px 26px;color:#fff;background:var(--c,var(--lost))}
+.dhead h2{margin:0;font-size:1.5rem}
+form{padding:22px 26px 26px;display:grid;gap:14px}
+label{display:grid;gap:5px;font-weight:600;font-size:.92rem}
+form input,form select,form textarea{border:2px solid var(--line);border-radius:12px;padding:10px 12px;font-weight:400;background:#fff;width:100%}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:480px){.row{grid-template-columns:1fr}}
+.fbtns{display:flex;gap:10px;justify-content:flex-end}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,120px);background:var(--ink);color:#fff;padding:12px 22px;border-radius:999px;font-weight:600;transition:transform .3s;z-index:9}
+.toast.show{transform:translate(-50%,0)}
+footer{text-align:center;color:var(--muted);padding:0 20px 40px;font-size:.9rem}
+</style>
+</head>
+<body>
+<header>
+  <div class="hero-tag" aria-hidden="true">Lost something?<small>Someone may have found it.</small></div>
+  <div class="wrap">
+    <p class="brand">College Lost and Found</p>
+    <h1>Lost it? Found it? Post it.</h1>
+    <p class="sub">A shared board where students list what they lost and what they found, so belongings get back to their owners.</p>
+    <div class="cta">
+      <button class="btn lost" data-open="lost">I lost something</button>
+      <button class="btn found" data-open="found">I found something</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="bar">
+    <div class="tabs" role="group" aria-label="Filter by type">
+      <button class="tab" data-f="all" aria-pressed="true">All</button>
+      <button class="tab" data-f="lost" aria-pressed="false">Lost</button>
+      <button class="tab" data-f="found" aria-pressed="false">Found</button>
+    </div>
+    <input type="search" id="q" placeholder="Search items, places, details" aria-label="Search">
+    <select id="cat" aria-label="Filter by category"><option value="">All categories</option></select>
+  </div>
+  <p class="count" id="count" aria-live="polite"></p>
+  <section class="grid" id="grid"></section>
+</main>
+<footer>Always meet in a public place on campus, like the library or the main office, when returning items.</footer>
+
+<dialog id="dlg">
+  <div class="dhead" id="dhead"><h2 id="dtitle"></h2></div>
+  <form id="form">
+    <label>Item name<input name="name" required maxlength="60" placeholder="e.g. Black backpack"></label>
+    <div class="row">
+      <label>Category<select name="category" required></select></label>
+      <label>Date<input type="date" name="date" required></label>
+    </div>
+    <label><span id="locLabel">Where?</span><input name="place" required maxlength="80" placeholder="e.g. Library, 2nd floor"></label>
+    <label>Details<textarea name="desc" rows="3" maxlength="300" placeholder="Colour, brand, stickers, anything that helps identify it"></textarea></label>
+    <div class="row">
+      <label>Your name<input name="who" required maxlength="40"></label>
+      <label>Phone or email<input name="contact" required maxlength="60"></label>
+    </div>
+    <div class="fbtns">
+      <button type="button" class="btn ghost" id="cancel">Cancel</button>
+      <button type="submit" class="btn" id="submitBtn">Post item</button>
+    </div>
+  </form>
+</dialog>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+const CATS=["Bags","Books & notes","Electronics","ID & cards","Keys","Clothing","Water bottles","Other"];
+const KEY="college-lost-found-v1";
+let mem=null;
+function load(){
+  try{const s=localStorage.getItem(KEY);if(s)return JSON.parse(s)}catch(e){}
+  return mem;
+}
+function save(){
+  mem=items;
+  try{localStorage.setItem(KEY,JSON.stringify(items))}catch(e){}
+}
+const day=n=>{const d=new Date();d.setDate(d.getDate()-n);return d.toISOString().slice(0,10)};
+let items=load()||[
+  {id:1,type:"lost",name:"Blue water bottle",category:"Water bottles",place:"Gym, near locker room",date:day(1),desc:"Steel bottle with a mountain sticker.",who:"Riya",contact:"riya@college.edu",done:false},
+  {id:2,type:"found",name:"Calculator (Casio fx-991)",category:"Electronics",place:"Exam Hall B",date:day(2),desc:"Has initials 'AK' on the back.",who:"Amit",contact:"98765 43210",done:false},
+  {id:3,type:"found",name:"Student ID card",category:"ID & cards",place:"Canteen",date:day(0),desc:"Name starts with S. Handed over to the front desk? No, I have it.",who:"Neha",contact:"neha@college.edu",done:false},
+  {id:4,type:"lost",name:"Black backpack",category:"Bags",place:"Library, 2nd floor",date:day(3),desc:"Contains a physics notebook and a green pencil case.",who:"Karan",contact:"karan@college.edu",done:false}
+];
+
+const $=s=>document.querySelector(s);
+const grid=$("#grid"), dlg=$("#dlg"), form=$("#form");
+let filter="all", mode="lost";
+
+CATS.forEach(c=>{
+  $("#cat").add(new Option(c,c));
+  form.category.add(new Option(c,c));
+});
+
+function el(tag,cls,text){const e=document.createElement(tag);if(cls)e.className=cls;if(text!==undefined)e.textContent=text;return e}
+const fmt=d=>new Date(d+"T00:00").toLocaleDateString(undefined,{day:"numeric",month:"short"});
+
+function render(){
+  const q=$("#q").value.trim().toLowerCase(), cat=$("#cat").value;
+  const list=items.filter(i=>(filter==="all"||i.type===filter)&&(!cat||i.category===cat)&&
+    (!q||[i.name,i.place,i.desc,i.category].join(" ").toLowerCase().includes(q)))
+    .sort((a,b)=>(a.done-b.done)||b.date.localeCompare(a.date)||b.id-a.id);
+  grid.replaceChildren();
+  $("#count").textContent=list.length+(list.length===1?" item":" items");
+  if(!list.length){
+    grid.append(el("div","empty","Nothing here yet. Post the first item using the buttons at the top."));
+    return;
+  }
+  list.forEach(i=>{
+    const c=el("article","item "+i.type+(i.done?" done":""));
+    c.append(el("span","badge",i.type==="lost"?"Lost":"Found"));
+    c.append(el("h3","",i.name));
+    c.append(el("p","meta",(i.type==="lost"?"Lost at ":"Found at ")+i.place+" on "+fmt(i.date)));
+    c.append(el("p","meta",i.category+" · posted by "+i.who));
+    if(i.desc)c.append(el("p","desc",i.desc));
+    const a=el("div","actions");
+    const contact=el("button","btn ghost","Show contact");
+    contact.onclick=()=>{
+      contact.textContent=i.contact;
+      contact.onclick=()=>{navigator.clipboard&&navigator.clipboard.writeText(i.contact).then(()=>toast("Contact copied"),()=>{})};
+    };
+    const done=el("button","btn ghost",i.done?"Reopen":(i.type==="lost"?"Mark as found":"Mark as returned"));
+    done.onclick=()=>{i.done=!i.done;save();render();toast(i.done?"Marked as resolved":"Reopened")};
+    const del=el("button","btn ghost","Delete");
+    del.onclick=()=>{if(confirm("Delete this post?")){items=items.filter(x=>x.id!==i.id);save();render();toast("Post deleted")}};
+    a.append(contact,done,del);
+    c.append(a);
+    grid.append(c);
+  });
+}
+
+function openForm(type){
+  mode=type;
+  form.reset();
+  form.date.value=day(0);
+  form.date.max=day(0);
+  const lost=type==="lost";
+  $("#dhead").style.setProperty("--c",lost?"var(--lost)":"var(--found)");
+  $("#dtitle").textContent=lost?"Post a lost item":"Post a found item";
+  $("#locLabel").textContent=lost?"Where did you lose it?":"Where did you find it?";
+  $("#submitBtn").className="btn "+type;
+  dlg.showModal();
+}
+document.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>openForm(b.dataset.open));
+$("#cancel").onclick=()=>dlg.close();
+dlg.addEventListener("click",e=>{if(e.target===dlg)dlg.close()});
+
+form.onsubmit=e=>{
+  e.preventDefault();
+  const f=new FormData(form);
+  items.push({id:Date.now(),type:mode,name:f.get("name").trim(),category:f.get("category"),place:f.get("place").trim(),
+    date:f.get("date"),desc:f.get("desc").trim(),who:f.get("who").trim(),contact:f.get("contact").trim(),done:false});
+  save();dlg.close();
+  filter=mode;syncTabs();render();
+  toast(mode==="lost"?"Lost item posted":"Found item posted");
+};
+
+function syncTabs(){document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-pressed",t.dataset.f===filter))}
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{filter=t.dataset.f;syncTabs();render()});
+$("#q").oninput=render; $("#cat").onchange=render;
+
+let tt;
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("show");clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("show"),2200)}
+
+render();
+</script>
+</body>
+</html>
