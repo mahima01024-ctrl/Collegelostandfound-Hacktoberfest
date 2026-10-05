@@ -136,10 +136,10 @@ function save(){
 }
 const day=n=>{const d=new Date();d.setDate(d.getDate()-n);return d.toISOString().slice(0,10)};
 let items=load()||[
-  {id:1,type:"lost",name:"Blue water bottle",category:"Water bottles",place:"Gym, near locker room",date:day(1),desc:"Steel bottle with a mountain sticker.",who:"Riya",contact:"riya@college.edu",done:false},
-  {id:2,type:"found",name:"Calculator (Casio fx-991)",category:"Electronics",place:"Exam Hall B",date:day(2),desc:"Has initials 'AK' on the back.",who:"Amit",contact:"98765 43210",done:false},
-  {id:3,type:"found",name:"Student ID card",category:"ID & cards",place:"Canteen",date:day(0),desc:"Name starts with S. Handed over to the front desk? No, I have it.",who:"Neha",contact:"neha@college.edu",done:false},
-  {id:4,type:"lost",name:"Black backpack",category:"Bags",place:"Library, 2nd floor",date:day(3),desc:"Contains a physics notebook and a green pencil case.",who:"Karan",contact:"karan@college.edu",done:false}
+  {id:1,type:"lost",name:"Blue water bottle",category:"Water bottles",place:"Gym, near locker room",date:day(1),desc:"It was a blue Steel bottle with a mountain sticker.",who:"Riya",contact:"riya@college.edu",done:false},
+  {id:2,type:"found",name:"Calculator (Casio fx-991)",category:"Electronics",place:"Exam Hall B",date:day(2),desc:"Has initials 'AK' on the back. I have it and can arrange to return it.",who:"Amit",contact:"98765 43210",done:false},
+  {id:3,type:"found",name:"Student ID card",category:"ID & cards",place:"Canteen",date:day(0),desc:"Name starts with N. I am holding it and can hand it over.",who:"Neha",contact:"neha@college.edu",done:false},
+  {id:4,type:"lost",name:"Black backpack",category:"Bags",place:"Library, 2nd floor",date:day(3),desc:"Contains a physics notebook and a green pencil case. Please contact me if you found it.",who:"Karan",contact:"karan@college.edu",done:false}
 ];
 
 const $=s=>document.querySelector(s);
