@@ -134,7 +134,14 @@ function save(){
   mem=items;
   try{localStorage.setItem(KEY,JSON.stringify(items))}catch(e){}
 }
-const day=n=>{const d=new Date();d.setDate(d.getDate()-n);return d.toISOString().slice(0,10)};
+const day = n => {
+  const d = new Date();
+  d.setDate(d.getDate() - n);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const date = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${date}`;
+};
 let items=load()||[
   {id:1,type:"lost",name:"Blue water bottle",category:"Water bottles",place:"Gym, near locker room",date:day(1),desc:"Steel bottle with a mountain sticker.",who:"Riya",contact:"riya@college.edu",done:false},
   {id:2,type:"found",name:"Calculator (Casio fx-991)",category:"Electronics",place:"Exam Hall B",date:day(2),desc:"Has initials 'AK' on the back.",who:"Amit",contact:"98765 43210",done:false},
