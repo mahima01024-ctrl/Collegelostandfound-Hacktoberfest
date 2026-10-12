@@ -204,14 +204,44 @@ document.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>openForm(b.dat
 $("#cancel").onclick=()=>dlg.close();
 dlg.addEventListener("click",e=>{if(e.target===dlg)dlg.close()});
 
-form.onsubmit=e=>{
+form.onsubmit = e => {
   e.preventDefault();
-  const f=new FormData(form);
-  items.push({id:Date.now(),type:mode,name:f.get("name").trim(),category:f.get("category"),place:f.get("place").trim(),
-    date:f.get("date"),desc:f.get("desc").trim(),who:f.get("who").trim(),contact:f.get("contact").trim(),done:false});
-  save();dlg.close();
-  filter=mode;syncTabs();render();
-  toast(mode==="lost"?"Lost item posted":"Found item posted");
+  form.querySelectorAll('.error-msg').forEach(msg => msg.remove());
+  const f = new FormData(form);
+  const name = f.get("name").trim();
+  const place = f.get("place").trim();
+  const who = f.get("who").trim();
+  const contact = f.get("contact").trim();
+  let hasError = false;
+  ['name', 'place', 'who', 'contact'].forEach(field => {
+    if (!f.get(field).trim()) {
+      const msg = el("div", "error-msg", "Field cannot be empty or just spaces.");
+      msg.style.color = "var(--lost)";
+      msg.style.fontSize = "0.85rem";
+      msg.style.marginTop = "4px";
+      form.elements[field].after(msg);
+      hasError = true;
+    }
+  });
+  if (hasError) return;
+  items.push({
+    id: Date.now(), 
+    type: mode, 
+    name: name, 
+    category: f.get("category"), 
+    place: place, 
+    date: f.get("date"), 
+    desc: f.get("desc").trim(), 
+    who: who, 
+    contact: contact, 
+    done: false
+  });
+  save();
+  dlg.close(); 
+  filter = mode;
+  syncTabs();
+  render(); 
+  toast(mode === "lost" ? "Lost item posted" : "Found item posted");
 };
 
 function syncTabs(){document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-pressed",t.dataset.f===filter))}
