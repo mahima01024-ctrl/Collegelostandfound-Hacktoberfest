@@ -174,10 +174,21 @@ function render(){
     if(i.desc)c.append(el("p","desc",i.desc));
     const a=el("div","actions");
     const contact=el("button","btn ghost","Show contact");
-    contact.onclick=()=>{
-      contact.textContent=i.contact;
-      contact.onclick=()=>{navigator.clipboard&&navigator.clipboard.writeText(i.contact).then(()=>toast("Contact copied"),()=>{})};
+   const contact = el("button", "btn ghost", "Show contact");
+    contact.onclick = () => {
+    contact.textContent = i.contact;
+    contact.onclick = () => {
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(i.contact).then(
+                () => toast("Contact copied"),
+                () => toast("Couldn't copy. Please copy it manually.")
+            );
+        } 
+        else {
+            toast("Couldn't copy. Please copy it manually.");
+        }
     };
+};
     const done=el("button","btn ghost",i.done?"Reopen":(i.type==="lost"?"Mark as found":"Mark as returned"));
     done.onclick=()=>{i.done=!i.done;save();render();toast(i.done?"Marked as resolved":"Reopened")};
     const del=el("button","btn ghost","Delete");
