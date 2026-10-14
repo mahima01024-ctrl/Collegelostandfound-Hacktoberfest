@@ -18,6 +18,32 @@ button,input,select,textarea{font:inherit;color:inherit}
 :focus-visible{outline:3px solid var(--sun);outline-offset:2px}
 
 header{background:var(--blue);color:#fff;padding:48px 20px 72px;position:relative;overflow:hidden}
+.how-it-works {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding: 16px 20px;
+  background: var(--card);
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(16,26,77,.12);
+}
+.how-it-works p {
+  margin: 0;
+  flex: 1;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+.how-it-works strong {
+  display: block;
+  color: var(--ink);
+  margin-bottom: 2px;
+}
+@media(max-width: 600px) {
+  .how-it-works {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
 .wrap{max-width:1080px;margin:0 auto}
 .brand{font-weight:600;font-size:1rem;opacity:.85;margin:0 0 18px}
 h1{font-size:clamp(2.6rem,8vw,5.5rem);line-height:.95;margin:0;font-weight:800;letter-spacing:-.03em;max-width:12ch}
@@ -69,6 +95,14 @@ form input,form select,form textarea{border:2px solid var(--line);border-radius:
 .toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,120px);background:var(--ink);color:#fff;padding:12px 22px;border-radius:999px;font-weight:600;transition:transform .3s;z-index:9}
 .toast.show{transform:translate(-50%,0)}
 footer{text-align:center;color:var(--muted);padding:0 20px 40px;font-size:.9rem}
+.footer-link {
+  color: var(--blue);
+  text-decoration: none;
+  font-weight: 600;
+}
+.footer-link:hover {
+  text-decoration: underline;
+}
 </style>
 </head>
 <body>
@@ -86,6 +120,13 @@ footer{text-align:center;color:var(--muted);padding:0 20px 40px;font-size:.9rem}
 </header>
 
 <main>
+  <main>
+  <!-- New "How it works" section -->
+  <div class="how-it-works">
+    <p><strong>Post it:</strong> List your lost or found item.</p>
+    <p><strong>Check the board:</strong> Browse or search for matches.</p>
+    <p><strong>Meet safely:</strong> Return items in a public place.</p>
+  </div>
   <div class="bar">
     <div class="tabs" role="group" aria-label="Filter by type">
       <button class="tab" data-f="all" aria-pressed="true">All</button>
@@ -98,7 +139,11 @@ footer{text-align:center;color:var(--muted);padding:0 20px 40px;font-size:.9rem}
   <p class="count" id="count" aria-live="polite"></p>
   <section class="grid" id="grid"></section>
 </main>
-<footer>Always meet in a public place on campus, like the library or the main office, when returning items.</footer>
+<footer>
+  Always meet in a public place on campus, like the library or the main office, when returning items.
+  <br><br>
+  <a href="https://github.com/mahima01024-ctrl/Collegelostandfound-Hacktoberfest" target="_blank" class="footer-link">About this project</a>
+</footer>
 
 <dialog id="dlg">
   <div class="dhead" id="dhead"><h2 id="dtitle"></h2></div>
