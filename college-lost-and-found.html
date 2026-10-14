@@ -11,6 +11,30 @@
   --blue:#2437d6; --ink:#101a4d; --page:#f2f4ff; --card:#fff;
   --lost:#ff5a4f; --found:#12a97a; --sun:#ffd23f; --muted:#5d668f; --line:#d9ddf5;
 }
+:root[data-theme="dark"] {
+  --blue: #3a4df0;
+  --ink: #e2e6ff;
+  --page: #0a0d1a;
+  --card: #151b2e;
+  --lost: #ff6b62;
+  --found: #16c891;
+  --sun: #f2c01d;
+  --muted: #8a94bd;
+  --line: #263152;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --blue: #3a4df0;
+    --ink: #e2e6ff;
+    --page: #0a0d1a;
+    --card: #151b2e;
+    --lost: #ff6b62;
+    --found: #16c891;
+    --sun: #f2c01d;
+    --muted: #8a94bd;
+    --line: #263152;
+  }
+}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;font-family:'Bricolage Grotesque',system-ui,sans-serif;background:var(--page);color:var(--ink);line-height:1.5}
@@ -40,7 +64,7 @@ main{max-width:1080px;margin:-34px auto 60px;padding:0 20px;position:relative}
 .tabs{display:flex;gap:6px}
 .tab{border:0;background:transparent;border-radius:999px;padding:9px 18px;font-weight:600;cursor:pointer;color:var(--muted)}
 .tab[aria-pressed=true]{background:var(--ink);color:#fff}
-.bar input[type=search],.bar select{flex:1;min-width:150px;border:2px solid var(--line);border-radius:12px;padding:10px 14px;background:#fff}
+.bar input[type=search],.bar select{flex:1;min-width:150px;border:2px solid var(--line);border-radius:12px;padding:10px 14px;background:var(--card)}
 .count{margin:26px 4px 14px;color:var(--muted);font-weight:600}
 
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:22px}
@@ -62,7 +86,7 @@ dialog::backdrop{background:rgba(16,26,77,.6)}
 .dhead h2{margin:0;font-size:1.5rem}
 form{padding:22px 26px 26px;display:grid;gap:14px}
 label{display:grid;gap:5px;font-weight:600;font-size:.92rem}
-form input,form select,form textarea{border:2px solid var(--line);border-radius:12px;padding:10px 12px;font-weight:400;background:#fff;width:100%}
+form input,form select,form textarea{border:2px solid var(--line);border-radius:12px;padding:10px 12px;font-weight:400;background:var(--card);width:100%}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 @media(max-width:480px){.row{grid-template-columns:1fr}}
 .fbtns{display:flex;gap:10px;justify-content:flex-end}
@@ -70,10 +94,15 @@ form input,form select,form textarea{border:2px solid var(--line);border-radius:
 .toast.show{transform:translate(-50%,0)}
 footer{text-align:center;color:var(--muted);padding:0 20px 40px;font-size:.9rem}
 </style>
+<script>
+  const saved = localStorage.getItem('college-theme');
+  if (saved) document.documentElement.setAttribute('data-theme', saved);
+</script>
 </head>
 <body>
 <header>
-  <div class="hero-tag" aria-hidden="true">Lost something?<small>Someone may have found it.</small></div>
+  <button id="theme-btn" aria-label="Toggle dark mode" style="position: absolute; top: 20px; right: 20px; background: transparent; border: 2px solid rgba(255,255,255,0.4); color: #fff; border-radius: 50px; padding: 6px 12px; cursor: pointer; font-size: 1rem; z-index: 10;">🌗</button>
+  <div class="hero-tag" aria-hidden="true">
   <div class="wrap">
     <p class="brand">College Lost and Found</p>
     <h1>Lost it? Found it? Post it.</h1>
@@ -123,6 +152,16 @@ footer{text-align:center;color:var(--muted);padding:0 20px 40px;font-size:.9rem}
 <div class="toast" id="toast" role="status"></div>
 
 <script>
+const themeBtn = document.querySelector("#theme-btn");
+themeBtn.onclick = () => {
+  const root = document.documentElement;
+  const isDark = root.getAttribute("data-theme") === "dark" || 
+                (!root.hasAttribute("data-theme") && window.matchMedia("(prefers-color-scheme: dark)").matches);
+  
+  const newTheme = isDark ? "light" : "dark";
+  root.setAttribute("data-theme", newTheme);
+  localStorage.setItem("college-theme", newTheme);
+};
 const CATS=["Bags","Books & notes","Electronics","ID & cards","Keys","Clothing","Water bottles","Other"];
 const KEY="college-lost-found-v1";
 let mem=null;
